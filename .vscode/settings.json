@@ -1,0 +1,16 @@
+{
+  "editor.rulers": [80, 120],
+  "editor.renderWhitespace": "all",
+  "editor.renderFinalNewline": "dimmed",
+  "editor.renderControlCharacters": true,
+
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    "config.h": "c",
+    "memory.h": "c",
+    "mimalloc.h": "c"
+  }
+}

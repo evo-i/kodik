@@ -1,0 +1,6 @@
+#ifndef KODIK_CONFIG_H
+#define KODIK_CONFIG_H 1
+
+#cmakedefine HAS_MIMALLOC_H
+
+#endif /* KODIK_CONFIG_H */
