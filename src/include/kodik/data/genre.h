@@ -6,6 +6,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include <stdint.h>
+#include <stddef.h>
 #include "../exports.h"
 
 typedef struct kodik_genre_t kodik_genre_t;

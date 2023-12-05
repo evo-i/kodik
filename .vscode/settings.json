@@ -11,6 +11,12 @@
   "files.associations": {
     "config.h": "c",
     "memory.h": "c",
-    "mimalloc.h": "c"
-  }
+    "mimalloc.h": "c",
+    "stdint.h": "c",
+    "translation.h": "c",
+    "genre.h": "c"
+  },
+
+  "explorer.compactFolders": false,
+  "extensions.ignoreRecommendations": true
 }

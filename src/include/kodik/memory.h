@@ -6,6 +6,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include "exports.h"
+#include <stddef.h>
 #include <stdint.h>
 
 typedef void *(*kodik_malloc_t )(size_t count);

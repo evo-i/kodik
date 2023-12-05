@@ -5,7 +5,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
+typedef struct kodik_api_t kodik_api_t;
 
 #ifdef __cplusplus
 }
