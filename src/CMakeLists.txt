@@ -32,7 +32,7 @@ target_include_directories (kodik
 target_link_libraries (kodik
   PUBLIC
     Threads::Threads
-    jansson::jansson
+    PkgConfig::json
     $<IF:$<TARGET_EXISTS:libuv::uv_a>,libuv::uv_a,libuv::uv>
     $<$<BOOL:${HAS_MIMALLOC_H}>:$<IF:$<TARGET_EXISTS:mimalloc-static>,mimalloc-static,mimalloc>>)
 

@@ -21,7 +21,6 @@ kodik_country_new(void) {
   return kodik_calloc(1, sizeof(kodik_country_t));
 }
 
-KODIK_LOCAL
 kodik_country_t *
 kodik_country_new_data_size(char const *title, size_t title_length,
                             int64_t count) {
@@ -52,13 +51,11 @@ kodik_country_new_data_size(char const *title, size_t title_length,
   return country;
 }
 
-KODIK_LOCAL
 kodik_country_t *
 kodik_country_new_data(char const *title, int32_t count) {
   return kodik_country_new_data_size(title, strlen(title), count);
 }
 
-KODIK_LOCAL
 kodik_country_t *
 kodik_country_new_from_json(json_t const *root) {
   json_t *j_title;
