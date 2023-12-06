@@ -27,7 +27,7 @@ kodik_translation_t *
 kodik_translation_new_data_size(char const *title, size_t title_length,
                                 char const *type, size_t type_length,
                                 int64_t id) {
-  kodik_translation_t *translation;
+  kodik_translation_t *self;
   char *title_copy;
   char *type_copy;
 
@@ -52,21 +52,21 @@ kodik_translation_new_data_size(char const *title, size_t title_length,
     return NULL;
   }
 
-  translation = kodik_translation_new();
-  if (NULL == translation) {
+  self = kodik_translation_new();
+  if (NULL == self) {
     kodik_free(title_copy);
     kodik_free(type_copy);
     return NULL;
   }
 
-  *translation
+  *self
     = (kodik_translation_t) {
       .psz_title = memmove(title_copy, title, title_length),
       .psz_type = memmove(type_copy, type, type_length),
       .i_id = id
     };
 
-  return translation;
+  return self;
 }
 
 kodik_translation_t *
@@ -85,7 +85,7 @@ kodik_translation_new_from_json(json_t const *root) {
   size_t type_length;
   char const *title;
   char const *type;
-  int32_t id;
+  int64_t id;
 
   j_title = json_object_get(root, KODIK_TRANSLATION_FIELD_TITLE);
   j_type = json_object_get(root, KODIK_TRANSLATION_FIELD_TYPE);
@@ -111,25 +111,36 @@ kodik_translation_new_from_json(json_t const *root) {
 }
 
 char const *
-kodik_translation_get_title(kodik_translation_t const *translation) {
+kodik_translation_get_title(kodik_translation_t const *self) {
   return
-    translation
-      ? translation->psz_title
+    self
+      ? self->psz_title
       : NULL;
 }
 
 char const *
-kodik_translation_get_type(kodik_translation_t const *translation) {
+kodik_translation_get_type(kodik_translation_t const *self) {
   return
-    translation
-      ? translation->psz_type
+    self
+      ? self->psz_type
       : NULL;
 }
 
 int64_t
-kodik_translation_get_id(kodik_translation_t const *translation) {
+kodik_translation_get_id(kodik_translation_t const *self) {
   return
-    translation
-      ? translation->i_id
+    self
+      ? self->i_id
       : INT64_MIN;
+}
+
+void
+kodik_translation_free(kodik_translation_t *self) {
+  if (NULL == self) {
+    return;
+  }
+
+  kodik_free(self->psz_title);
+  kodik_free(self->psz_type);
+  kodik_free(self);
 }
