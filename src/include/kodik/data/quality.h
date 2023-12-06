@@ -11,7 +11,7 @@ typedef struct kodik_quality_t kodik_quality_t;
 
 KODIK_API
 char const *
-kodik_quality_get_title(kodik_quality_t const *quality);
+kodik_quality_get_title(kodik_quality_t const *self);
 
 #ifdef __cplusplus
 }

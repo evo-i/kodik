@@ -12,11 +12,11 @@ typedef struct kodik_country_t kodik_country_t;
 
 KODIK_API
 char const *
-kodik_country_get_title(kodik_country_t const *country);
+kodik_country_get_title(kodik_country_t const *self);
 
 KODIK_API
 int64_t
-kodik_country_get_count(kodik_country_t const *country);
+kodik_country_get_count(kodik_country_t const *self);
 
 #ifdef __cplusplus
 }

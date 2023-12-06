@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stddef.h>
+
 #include "../../exports.h"
 
 typedef struct kodik_v2_quality_t kodik_v2_quality_t;

@@ -12,11 +12,11 @@ typedef struct kodik_year_t kodik_year_t;
 
 KODIK_API
 int64_t
-kodik_year_get_year(kodik_year_t const *year);
+kodik_year_get_year(kodik_year_t const *self);
 
 KODIK_API
 int64_t
-kodik_year_get_count(kodik_year_t const *year);
+kodik_year_get_count(kodik_year_t const *self);
 
 #ifdef __cplusplus
 }
