@@ -16,7 +16,8 @@
     "translation.h": "c",
     "genre.h": "c",
     "stdbool.h": "c",
-    "jansson.h": "c"
+    "jansson.h": "c",
+    "quality.h": "c"
   },
 
   "explorer.compactFolders": false,

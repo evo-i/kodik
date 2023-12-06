@@ -16,13 +16,17 @@ add_library (kodik
     include/kodik/data/country.h
     include/kodik/data/quality.h
     include/kodik/data/translation.h
+    include/kodik/data/v2/quality.h
+    include/kodik/data/v2/translation.h
 
     src/kodik/memory.c
     src/kodik/data/year.c
     src/kodik/data/genre.c
     src/kodik/data/country.c
     src/kodik/data/quality.c
-    src/kodik/data/translation.c)
+    src/kodik/data/translation.c
+    src/kodik/data/v2/quality.c
+    src/kodik/data/v2/translation.c)
 
 target_include_directories (kodik
   PUBLIC
