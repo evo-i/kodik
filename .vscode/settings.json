@@ -14,9 +14,15 @@
     "mimalloc.h": "c",
     "stdint.h": "c",
     "translation.h": "c",
-    "genre.h": "c"
+    "genre.h": "c",
+    "stdbool.h": "c",
+    "jansson.h": "c"
   },
 
   "explorer.compactFolders": false,
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+
+  "cmake.preferredGenerators": [
+    "Ninja"
+  ]
 }

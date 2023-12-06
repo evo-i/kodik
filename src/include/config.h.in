@@ -2,5 +2,6 @@
 #define KODIK_CONFIG_H 1
 
 #cmakedefine HAS_MIMALLOC_H
+#cmakedefine HAVE_THREADS_H
 
 #endif /* KODIK_CONFIG_H */

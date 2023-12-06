@@ -8,6 +8,11 @@
 
 #define KODIK_QUALITY_TITLE_KEY ("title")
 
+/* FIXME:
+    NEED OPTIMIZATION WITH MEMORY ALLOCATION...
+    MAYBE STRUCT SIZE IS EQUAL TO STRING LENGTH?...
+*/
+
 struct kodik_quality_t {
   char *psz_title;
 };
@@ -39,7 +44,7 @@ kodik_quality_new_data_size(char const *title, size_t title_length) {
     return NULL;
   }
 
-  memcpy(quality->psz_title, title, title_length);
+  memmove(quality->psz_title, title, title_length);
 
   return quality;
 }
@@ -73,4 +78,14 @@ kodik_quality_get_title(kodik_quality_t const *quality) {
     quality
       ? quality->psz_title
       : NULL;
+}
+
+void
+kodik_quality_free(kodik_quality_t *self) {
+  if (NULL == self) {
+    return;
+  }
+
+  kodik_free(self->psz_title);
+  kodik_free(self);
 }

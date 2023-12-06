@@ -24,7 +24,7 @@ kodik_country_new(void) {
 kodik_country_t *
 kodik_country_new_data_size(char const *title, size_t title_length,
                             int64_t count) {
-  kodik_country_t *country;
+  kodik_country_t *self;
   char *title_copy;
 
   if (NULL == title
@@ -37,22 +37,23 @@ kodik_country_new_data_size(char const *title, size_t title_length,
     return NULL;
   }
 
-  country = kodik_country_new();
-  if (NULL == country) {
+  self = kodik_country_new();
+  if (NULL == self) {
     kodik_free(title_copy);
+    return NULL;
   }
 
-  *country
+  *self
     = (kodik_country_t) {
-      .psz_title = memcpy(title_copy, title, title_length),
+      .psz_title = memmove(title_copy, title, title_length),
       .i_count = count
     };
 
-  return country;
+  return self;
 }
 
 kodik_country_t *
-kodik_country_new_data(char const *title, int32_t count) {
+kodik_country_new_data(char const *title, int64_t count) {
   return kodik_country_new_data_size(title, strlen(title), count);
 }
 
@@ -60,10 +61,9 @@ kodik_country_t *
 kodik_country_new_from_json(json_t const *root) {
   json_t *j_title;
   json_t *j_count;
-  kodik_country_t *country;
   size_t title_length;
   char const *title;
-  int32_t count;
+  int64_t count;
 
   j_title = json_object_get(root, KODIK_COUNTRY_FIELD_TITLE);
   j_count = json_object_get(root, KODIK_COUNTRY_FIELD_COUNT);
@@ -96,4 +96,14 @@ kodik_country_get_count(kodik_country_t const *country) {
     country
       ? country->i_count
       : INT64_MIN;
+}
+
+void
+kodik_country_free(kodik_country_t *self) {
+  if (NULL == self) {
+    return;
+  }
+
+  kodik_free(self->psz_title);
+  kodik_free(self);
 }
