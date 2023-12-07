@@ -1,7 +1,6 @@
 #include <kodik/memory.h>
 #include <kodik/data/translation.h>
 
-#include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
 #include <stdint.h>

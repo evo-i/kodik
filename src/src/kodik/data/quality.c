@@ -1,10 +1,9 @@
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
-#include <jansson.h>
-
 #include <kodik/memory.h>
 #include <kodik/data/quality.h>
+
+#include <stddef.h>
+#include <string.h>
+#include <jansson.h>
 
 #define KODIK_QUALITY_TITLE_KEY ("title")
 

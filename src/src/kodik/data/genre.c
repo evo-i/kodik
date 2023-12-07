@@ -1,7 +1,6 @@
 #include <kodik/memory.h>
 #include <kodik/data/genre.h>
 
-#include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -24,7 +23,7 @@ kodik_genre_new(void) {
 kodik_genre_t *
 kodik_genre_new_data_size(char const *title, size_t title_length,
                           int64_t count) {
-  kodik_genre_t *genre;
+  kodik_genre_t *self;
   char *title_copy;
 
   if (NULL == title
@@ -37,19 +36,19 @@ kodik_genre_new_data_size(char const *title, size_t title_length,
     return NULL;
   }
 
-  genre = kodik_genre_new();
-  if (NULL == genre) {
+  self = kodik_genre_new();
+  if (NULL == self) {
     kodik_free(title_copy);
     return NULL;
   }
 
-  *genre
+  *self
     = (kodik_genre_t) {
-      .psz_title = memcpy(title_copy, title, title_length),
+      .psz_title = memmove(title_copy, title, title_length),
       .i_count = count
     };
 
-  return genre;
+  return self;
 }
 
 kodik_genre_t *
@@ -83,18 +82,18 @@ kodik_genre_new_from_json(json_t const *root) {
 }
 
 char const *
-kodik_genre_get_title(kodik_genre_t const *genre) {
+kodik_genre_get_title(kodik_genre_t const *self) {
   return
-    genre
-      ? genre->psz_title
+    self
+      ? self->psz_title
       : NULL;
 }
 
 int64_t
-kodik_genre_get_count(kodik_genre_t const *genre) {
+kodik_genre_get_count(kodik_genre_t const *self) {
   return
-    genre
-      ? genre->i_count
+    self
+      ? self->i_count
       : INT32_MIN;
 }
 

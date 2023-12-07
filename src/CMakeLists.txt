@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.27)
 
-if (DEFINED USE_MIMALLOC)
+if (DEFINED KODIK_USE_MIMALLOC)
   if (DEFINED mimalloc_FOUND)
     set (HAS_MIMALLOC_H 1)
   endif ()
@@ -30,14 +30,16 @@ add_library (kodik
 
 target_include_directories (kodik
   PUBLIC
-    "${CMAKE_CURRENT_LIST_DIR}/include/"
-    "${CMAKE_BINARY_DIR}")
+    include
+  INTERFACE
+    include
+  PRIVATE
+    ${CMAKE_BINARY_DIR})
 
 target_link_libraries (kodik
   PUBLIC
     Threads::Threads
     PkgConfig::json
-    $<IF:$<TARGET_EXISTS:libuv::uv_a>,libuv::uv_a,libuv::uv>
     $<$<BOOL:${HAS_MIMALLOC_H}>:$<IF:$<TARGET_EXISTS:mimalloc-static>,mimalloc-static,mimalloc>>)
 
 target_compile_definitions (kodik

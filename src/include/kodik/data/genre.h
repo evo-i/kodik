@@ -13,11 +13,11 @@ typedef struct kodik_genre_t kodik_genre_t;
 
 KODIK_API
 char const *
-kodik_genre_get_title(kodik_genre_t const *genre);
+kodik_genre_get_title(kodik_genre_t const *self);
 
 KODIK_API
 int64_t
-kodik_genre_get_count(kodik_genre_t const *genre);
+kodik_genre_get_count(kodik_genre_t const *self);
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,6 @@
 #include <kodik/memory.h>
 #include <kodik/data/v2/quality.h>
 
-#include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -45,7 +44,7 @@ kodik_v2_quality_new_data_size(char const *title, size_t title_length,
 
   *self
     = (kodik_v2_quality_t) {
-      .psz_title = memcpy(title_copy, title, title_length),
+      .psz_title = memmove(title_copy, title, title_length),
       .i_count = count
     };
 

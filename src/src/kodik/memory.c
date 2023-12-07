@@ -1,7 +1,8 @@
-#include <uv.h>
+#include <pthread.h>
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <kodik/memory.h>
 
 #ifdef HAS_CONFIG
@@ -16,11 +17,9 @@
 # define KODIK_MEMORY_SELECT(FIRST, SECOND) SECOND
 #endif
 
-#define KODIK_MEMORY_ERROR_MUTEX(error) \
-"uv_mutex_init failed with error: %s and message: %s\n",  \
-uv_err_name(error), uv_strerror(error)
+#define KODIK_MEMORY_ERROR_MUTEX(error) #error
 
-static uv_mutex_t *memory_mutex = NULL;
+static pthread_mutex_t memory_mutex = { 0 };
 
 struct mem__ {
   kodik_malloc_t  cb_malloc;
@@ -37,8 +36,8 @@ struct mem__ {
 int
 static_mutex_init(void) {
   int status = 0;
-  if (NULL == memory_mutex) {
-    status = uv_mutex_init(memory_mutex);
+  if (0 == memory_mutex) {
+    status = pthread_mutex_init(&memory_mutex, NULL);
     if (0 != status) {
       (void) fprintf(stderr, KODIK_MEMORY_ERROR_MUTEX(status));
     }
@@ -57,12 +56,12 @@ kodik_memory_get(kodik_malloc_t *p_out_malloc, kodik_calloc_t *p_out_calloc,
     return status;
   }
 
-  uv_mutex_lock(memory_mutex);
+  pthread_mutex_lock(&memory_mutex);
   *p_out_malloc   = kodik_memory__.cb_malloc;
   *p_out_calloc   = kodik_memory__.cb_calloc;
   *p_out_realloc  = kodik_memory__.cb_realloc;
   *p_out_free     = kodik_memory__.cb_free;
-  uv_mutex_unlock(memory_mutex);
+  pthread_mutex_unlock(&memory_mutex);
 
   return status;
 }
@@ -76,12 +75,12 @@ kodik_memory_set(kodik_malloc_t p_malloc, kodik_calloc_t p_calloc,
     return status;
   }
 
-  uv_mutex_lock(memory_mutex);
+  pthread_mutex_lock(&memory_mutex);
   kodik_memory__.cb_malloc = p_malloc;
   kodik_memory__.cb_calloc = p_calloc;
   kodik_memory__.cb_realloc = p_realloc;
   kodik_memory__.cb_free = p_free;
-  uv_mutex_unlock(memory_mutex);
+  pthread_mutex_unlock(&memory_mutex);
 
   return status;
 }
@@ -92,9 +91,9 @@ kodik_malloc(size_t size) {
     return NULL;
   }
 
-  uv_mutex_lock(memory_mutex);
+  pthread_mutex_lock(&memory_mutex);
   mem = kodik_memory__.cb_malloc(size);
-  uv_mutex_unlock(memory_mutex);
+  pthread_mutex_unlock(&memory_mutex);
   return mem;
 }
 
@@ -106,9 +105,9 @@ kodik_calloc(size_t count, size_t size) {
     return NULL;
   }
 
-  uv_mutex_lock(memory_mutex);
+  pthread_mutex_lock(&memory_mutex);
   mem = kodik_memory__.cb_calloc(count, size);
-  uv_mutex_unlock(memory_mutex);
+  pthread_mutex_unlock(&memory_mutex);
   return mem;
 }
 
@@ -120,9 +119,9 @@ kodik_realloc(void *old_mem, size_t new_size) {
     return NULL;
   }
 
-  uv_mutex_lock(memory_mutex);
+  pthread_mutex_lock(&memory_mutex);
   mem = kodik_memory__.cb_realloc(old_mem, new_size);
-  uv_mutex_unlock(memory_mutex);
+  pthread_mutex_unlock(&memory_mutex);
   return mem;
 }
 
@@ -132,7 +131,7 @@ kodik_free(void *block) {
     return;
   }
 
-  uv_mutex_lock(memory_mutex);
+  pthread_mutex_lock(&memory_mutex);
   kodik_memory__.cb_free(block);
-  uv_mutex_unlock(memory_mutex);
+  pthread_mutex_unlock(&memory_mutex);
 }
