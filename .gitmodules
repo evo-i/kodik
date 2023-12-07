@@ -1,0 +1,4 @@
+[submodule "vendor/munit"]
+	path = vendor/munit
+	url = https://github.com/evo-i/munit.git
+	branch = kodik
