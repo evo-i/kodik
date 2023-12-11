@@ -12,7 +12,6 @@ function(kodik_make_data_test NAME)
     ${CURRENT_TEST_EXEC_NAME}
     PRIVATE
       kodik
-      PkgConfig::json
       munit)
 
   add_test (

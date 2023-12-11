@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <jansson.h>
+#include <json_object.h>
 
 #define KODIK_GENRE_FIELD_TITLE ("title")
 #define KODIK_GENRE_FIELD_COUNT ("count")
@@ -57,28 +57,42 @@ kodik_genre_new_data(char const *title, int64_t count) {
 }
 
 kodik_genre_t *
-kodik_genre_new_from_json(json_t const *root) {
-  json_t *j_title;
-  json_t *j_count;
+kodik_genre_new_from_json(json_object *root) {
+  kodik_genre_t *self;
+  json_object *j_title;
+  json_object *j_count;
   size_t title_length;
   char const *title;
   int64_t count;
 
-  j_title = json_object_get(root, KODIK_GENRE_FIELD_TITLE);
-  j_count = json_object_get(root, KODIK_GENRE_FIELD_COUNT);
+  self = NULL;
+
+  j_title = json_object_object_get(root, KODIK_GENRE_FIELD_TITLE);
+  j_count = json_object_object_get(root, KODIK_GENRE_FIELD_COUNT);
 
   if (NULL == j_title
-      || !json_is_string(j_title)
+      || !json_object_is_type(j_title, json_type_string)
       || NULL == j_count
-      || !json_is_integer(j_count)) {
+      || !json_object_is_type(j_count, json_type_int)) {
+    if (NULL != j_count) {
+      json_object_put(j_count);
+    }
+    if (NULL != j_title) {
+      json_object_put(j_title);
+    }
     return NULL;
   }
 
-  title = json_string_value(j_title);
-  title_length = json_string_length(j_title);
-  count = json_integer_value(j_count);
+  title = json_object_get_string(j_title);
+  title_length = json_object_get_string_len(j_title);
+  count = json_object_get_int64(j_count);
 
-  return kodik_genre_new_data_size(title, title_length, count);
+  self = kodik_genre_new_data_size(title, title_length, count);
+
+  json_object_put(j_count);
+  json_object_put(j_title);
+
+  return self;
 }
 
 char const *

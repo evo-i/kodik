@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <jansson.h>
+#include <json_object.h>
 
 #define KODIK_YEAR_FIELD_YEAR  ("year")
 #define KODIK_YEAR_FIELD_COUNT ("count")
@@ -40,27 +40,41 @@ kodik_year_new_data(int64_t year, int64_t count) {
 }
 
 kodik_year_t *
-kodik_year_new_from_json(json_t const *root) {
-  json_t *j_year;
-  json_t *j_count;
+kodik_year_new_from_json(json_object *root) {
+  kodik_year_t *self;
+  json_object *j_year;
+  json_object *j_count;
 
   int64_t year;
   int64_t count;
 
-  j_year = json_object_get(root, KODIK_YEAR_FIELD_YEAR);
-  j_count = json_object_get(root, KODIK_YEAR_FIELD_COUNT);
+  self = NULL;
+
+  j_year = json_object_object_get(root, KODIK_YEAR_FIELD_YEAR);
+  j_count = json_object_object_get(root, KODIK_YEAR_FIELD_COUNT);
 
   if (NULL == j_year
-      || !json_is_integer(j_year)
+      || !json_object_is_type(j_year, json_type_int)
       || NULL == j_count
-      || !json_is_integer(j_count)) {
-    return NULL;
+      || !json_object_is_type(j_count, json_type_int)) {
+    if (NULL != j_count) {
+      json_object_put(j_count);
+    }
+    if (NULL != j_year) {
+      json_object_put(j_year);
+    }
+    return self;
   }
 
   year = json_integer_value(j_year);
   count = json_integer_value(j_count);
 
-  return kodik_year_new_data(year, count);
+  self = kodik_year_new_data(year, count);
+
+  json_object_put(j_count);
+  json_object_put(j_year);
+
+  return self;
 }
 
 int64_t

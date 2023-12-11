@@ -1,7 +1,15 @@
 #ifndef KODIK_CONFIG_H
 #define KODIK_CONFIG_H 1
 
-#cmakedefine HAS_MIMALLOC_H
-#cmakedefine HAVE_THREADS_H
+#cmakedefine HAS_MIMALLOC_H ${HAS_MIMALLOC_H}
+
+#cmakedefine HAVE_STDIO_H ${HAVE_STDIO_H}
+#cmakedefine HAVE_STDINT_H ${HAVE_STDINT_H}
+#cmakedefine HAVE_INTTYPES_H ${HAVE_INTTYPES_H}
+#cmakedefine HAVE_STDLIB_H ${HAVE_STDLIB_H}
+#cmakedefine HAVE_STRING_H ${HAVE_STRING_H}
+
+#cmakedefine HAVE_THREADS_H ${HAVE_THREADS_H}
+#cmakedefine HAVE_PTHREAD_H ${HAVE_PTHREAD_H}
 
 #endif /* KODIK_CONFIG_H */

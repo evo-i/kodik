@@ -39,8 +39,7 @@ target_include_directories (kodik
 target_link_libraries (kodik
   PUBLIC
     Threads::Threads
-    PkgConfig::json
-    $<$<BOOL:${HAS_MIMALLOC_H}>:$<IF:$<TARGET_EXISTS:mimalloc-static>,mimalloc-static,mimalloc>>)
+    json-c-static)
 
 target_compile_definitions (kodik
   PRIVATE
