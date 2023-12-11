@@ -1,11 +1,5 @@
 cmake_minimum_required (VERSION 3.27)
 
-if (DEFINED KODIK_USE_MIMALLOC)
-  if (DEFINED mimalloc_FOUND)
-    set (HAS_MIMALLOC_H 1)
-  endif ()
-endif ()
-
 add_library (kodik
   SHARED
     include/kodik/kodik.h
