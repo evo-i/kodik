@@ -12,3 +12,6 @@
 [submodule "vendor/threads"]
 	path = vendor/threads
 	url = https://github.com/evo-i/threads.git
+[submodule "vendor/utest"]
+	path = vendor/utest
+	url = https://github.com/sheredom/utest.h.git

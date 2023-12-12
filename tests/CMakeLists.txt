@@ -16,7 +16,7 @@ function(kodik_make_data_test NAME)
 
   target_include_directories (${CURRENT_TEST_EXEC_NAME}
     PRIVATE
-      kodik)
+      "${CMAKE_SOURCE_DIR}/vendor/utest")
 
   add_test (
     NAME "kodik ${NAME}"
