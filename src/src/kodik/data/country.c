@@ -17,11 +17,13 @@ struct kodik_country_t {
   int64_t i_count;
 };
 
+KODIK_API
 kodik_country_t *
 kodik_country_new(void) {
   return kodik_calloc(1, sizeof(kodik_country_t));
 }
 
+KODIK_API
 kodik_country_t *
 kodik_country_new_data_size(char const *title, size_t title_length,
                             int64_t count) {
@@ -53,11 +55,13 @@ kodik_country_new_data_size(char const *title, size_t title_length,
   return self;
 }
 
+KODIK_API
 kodik_country_t *
 kodik_country_new_data(char const *title, int64_t count) {
   return kodik_country_new_data_size(title, strlen(title), count);
 }
 
+KODIK_API
 kodik_country_t *
 kodik_country_new_from_json(json_object const *root) {
   json_object *j_title,
@@ -91,6 +95,7 @@ kodik_country_get_count(kodik_country_t const *country) {
       : INT64_MIN;
 }
 
+KODIK_API
 void
 kodik_country_free(kodik_country_t *self) {
   if (NULL == self) {

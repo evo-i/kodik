@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 3.27)
 
 add_library (kodik
-  SHARED
     include/kodik/kodik.h
     include/kodik/memory.h
     include/kodik/exports.h

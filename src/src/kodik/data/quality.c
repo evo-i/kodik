@@ -16,12 +16,13 @@ struct kodik_quality_t {
   char *psz_title;
 };
 
-static
+KODIK_API
 kodik_quality_t *
 kodik_quality_new(void) {
   return kodik_calloc(1, sizeof(kodik_quality_t));
 }
 
+KODIK_API
 kodik_quality_t *
 kodik_quality_new_data_size(char const *title, size_t title_length) {
   kodik_quality_t *quality;
@@ -48,17 +49,19 @@ kodik_quality_new_data_size(char const *title, size_t title_length) {
   return quality;
 }
 
+KODIK_API
 kodik_quality_t *
 kodik_quality_new_data(char const *title) {
   return kodik_quality_new_data_size(title, strlen(title));
 }
 
+KODIK_API
 kodik_quality_t *
 kodik_quality_new_from_json(json_object const *json) {
   json_object *j_title;
 
   if (!json_object_object_get_ex(json, KODIK_QUALITY_TITLE_KEY, &j_title)
-      || json_object_is_type(j_title, json_type_string)) {
+      || !json_object_is_type(j_title, json_type_string)) {
     return NULL;
   }
 
@@ -74,6 +77,7 @@ kodik_quality_get_title(kodik_quality_t const *quality) {
       : NULL;
 }
 
+KODIK_API
 void
 kodik_quality_free(kodik_quality_t *self) {
   if (NULL == self) {

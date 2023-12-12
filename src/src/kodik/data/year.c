@@ -15,12 +15,13 @@ struct kodik_year_t {
   int64_t i_count;
 };
 
-static
+KODIK_API
 kodik_year_t *
 kodik_year_new(void) {
   return kodik_calloc(1, sizeof(kodik_year_t));
 }
 
+KODIK_API
 kodik_year_t *
 kodik_year_new_data(int64_t year, int64_t count) {
   kodik_year_t *self;
@@ -39,6 +40,7 @@ kodik_year_new_data(int64_t year, int64_t count) {
   return self;
 }
 
+KODIK_API
 kodik_year_t *
 kodik_year_new_from_json(json_object const *root) {
   json_object *j_year,
@@ -71,6 +73,7 @@ kodik_year_get_count(kodik_year_t const *year) {
       : INT64_MIN;
 }
 
+KODIK_API
 void
 kodik_year_free(kodik_year_t *self) {
   kodik_free(self);

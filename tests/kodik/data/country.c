@@ -1,21 +1,83 @@
-#include <kodik/data/country.h>
-#include <jansson.h>
+#include <utest.h>
+#include <json.h>
+#include <json_util.h>
+#include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include <munit.h>
-#include <stdio.h>
+#include <kodik/memory.h>
+#include <kodik/data/country.h>
 
 #if defined(_MSC_VER)
 # pragma warning(disable: 4127)
 #endif
 
+FILE *json_file = NULL;
+
 extern
 kodik_country_t *
-kodik_country_new_from_json(json_t const *);
+kodik_country_new_from_json(json_object const *);
 
 extern
 void
 kodik_country_free(kodik_country_t *);
+
+UTEST(kodik, country) {
+  ASSERT_NE(json_file, NULL);
+
+  fseek(json_file, 0, SEEK_END);
+  size_t file_size = ftell(json_file);
+  rewind(json_file);
+
+  char *data = kodik_calloc(1, file_size + 1);
+  ASSERT_NE_MSG(data, NULL, "Unable to allocate memory.");
+
+  fread(data, 1, file_size, json_file);
+
+  json_tokener *tokener = json_tokener_new();
+
+  ASSERT_NE(tokener, NULL);
+
+  json_tokener_set_flags(tokener, JSON_TOKENER_VALIDATE_UTF8);
+
+  json_object *document = json_tokener_parse_ex(tokener, data, file_size + 1);
+
+  enum json_tokener_error error = json_tokener_get_error(tokener);
+  ASSERT_EQ(json_tokener_success, error);
+  ASSERT_NE(document, NULL);
+
+  ASSERT_EQ(json_object_get_type(document), json_type_object);
+
+  json_object *array;
+  ASSERT_TRUE(json_object_object_get_ex(document, "results", &array));
+  ASSERT_TRUE(json_object_is_type(array, json_type_array));
+
+  size_t array_size = json_object_array_length(array);
+  ASSERT_GT(array_size, 0);
+
+  for (size_t i = 0; i < array_size; i++) {
+    json_object *current = json_object_array_get_idx(array, i);
+    ASSERT_NE(NULL, current);
+    kodik_country_t *country = kodik_country_new_from_json(current);
+    ASSERT_NE(NULL, country);
+
+    json_object *j_count,
+                *j_title;
+
+    ASSERT_TRUE(json_object_object_get_ex(current, "title", &j_title));
+    ASSERT_TRUE(json_object_object_get_ex(current, "count", &j_count));
+
+    ASSERT_EQ(kodik_country_get_count(country), json_object_get_int64(j_count));
+    ASSERT_STREQ(kodik_country_get_title(country), json_object_get_string(j_title));
+
+    fprintf(stdout, "%s\n", json_object_to_json_string_ext(current, JSON_C_TO_STRING_PRETTY));
+
+    kodik_country_free(country);
+  }
+
+  ASSERT_EQ(json_object_put(document), 1);
+}
+
+struct utest_state_s utest_state = {0, 0, 0};
 
 int
 main(int argc, char *argv[]) {
@@ -24,51 +86,11 @@ main(int argc, char *argv[]) {
     return 1;
   }
 
-  FILE *json_file = fopen(argv[1], "r");
+  json_file = fopen(argv[1], "r");
 
-  if (errno != 0) {
-    fprintf(stderr, "Failied to open file: %s\nFile path: %s\n", strerror(errno), argv[1]);
-  }
+  int result = utest_main(argc, argv);
 
-  munit_assert_ptr_not_null(json_file);
-
-  json_error_t err = { 0 };
-  json_t *json_root = json_loadf(json_file, 0, &err);
-
-  munit_assert_ptr_not_null(json_root);
-
-  json_t *json_results = json_object_get(json_root, "results");
-
-  munit_assert_ptr_not_null(json_results);
-  munit_assert(json_is_array(json_results));
-
-  json_t *json_cursor = NULL;
-  kodik_country_t *kodik_object = NULL;
-  size_t index = 0;
-
-  json_array_foreach(json_results, index, json_cursor) {
-    kodik_object = kodik_country_new_from_json(json_cursor);
-    munit_assert_ptr_not_null(kodik_object);
-
-    munit_assert_int64(
-      kodik_country_get_count(kodik_object),
-      ==,
-      json_integer_value(json_object_get(json_cursor, "count"))
-    );
-
-    munit_assert_string_equal(
-      kodik_country_get_title(kodik_object),
-      json_string_value(json_object_get(json_cursor, "title"))
-    );
-
-    fprintf (stdout, "%s\n", json_dumps(json_cursor, JSON_COMPACT));
-
-    kodik_country_free(kodik_object);
-    kodik_object = NULL;
-  }
-
-  json_decref(json_root);
   fclose(json_file);
 
-  return 0;
+  return result;
 }

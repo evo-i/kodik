@@ -15,11 +15,13 @@ struct kodik_genre_t {
   int64_t i_count;
 };
 
+KODIK_API
 kodik_genre_t *
 kodik_genre_new(void) {
   return kodik_calloc(1, sizeof(kodik_genre_t));
 }
 
+KODIK_API
 kodik_genre_t *
 kodik_genre_new_data_size(char const *title, size_t title_length,
                           int64_t count) {
@@ -51,11 +53,13 @@ kodik_genre_new_data_size(char const *title, size_t title_length,
   return self;
 }
 
+KODIK_API
 kodik_genre_t *
 kodik_genre_new_data(char const *title, int64_t count) {
   return kodik_genre_new_data_size(title, strlen(title), count);
 }
 
+KODIK_API
 kodik_genre_t *
 kodik_genre_new_from_json(json_object *root) {
   json_object *j_title,
@@ -89,6 +93,7 @@ kodik_genre_get_count(kodik_genre_t const *self) {
       : INT32_MIN;
 }
 
+KODIK_API
 void
 kodik_genre_free(kodik_genre_t *self) {
   if (NULL == self) {

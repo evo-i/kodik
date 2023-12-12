@@ -17,11 +17,13 @@ struct kodik_translation_t {
   int64_t i_id;
 };
 
+KODIK_API
 kodik_translation_t *
 kodik_translation_new(void) {
   return kodik_calloc(1, sizeof(kodik_translation_t));
 }
 
+KODIK_API
 kodik_translation_t *
 kodik_translation_new_data_size(char const *title, size_t title_length,
                                 char const *type, size_t type_length,
@@ -68,6 +70,7 @@ kodik_translation_new_data_size(char const *title, size_t title_length,
   return self;
 }
 
+KODIK_API
 kodik_translation_t *
 kodik_translation_new_data(char const *title, char const *type, int64_t id) {
   return kodik_translation_new_data_size(title, strlen(title),
@@ -75,6 +78,7 @@ kodik_translation_new_data(char const *title, char const *type, int64_t id) {
                                          id);
 }
 
+KODIK_API
 kodik_translation_t *
 kodik_translation_new_from_json(json_object const *root) {
   json_object *j_title,
@@ -121,6 +125,7 @@ kodik_translation_get_id(kodik_translation_t const *self) {
       : INT64_MIN;
 }
 
+KODIK_API
 void
 kodik_translation_free(kodik_translation_t *self) {
   if (NULL == self) {

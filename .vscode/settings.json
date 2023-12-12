@@ -24,7 +24,9 @@
     "json_tokener.h": "c",
     "exports.h": "c",
     "stdatomic.h": "c",
-    "vcruntime_c11_stdatomic.h": "c"
+    "vcruntime_c11_stdatomic.h": "c",
+    "country.h": "c",
+    "year.h": "c"
   },
 
   "explorer.compactFolders": false,

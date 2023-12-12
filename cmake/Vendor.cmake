@@ -4,9 +4,9 @@ function (kodik_vendor_nng)
   add_subdirectory ("vendor/nng" EXCLUDE_FROM_ALL)
 endfunction (kodik_vendor_nng)
 
-function (kodik_vendor_munit)
-  add_subdirectory ("vendor/munit" EXCLUDE_FROM_ALL)
-endfunction (kodik_vendor_munit)
+# function (kodik_vendor_munit)
+#   add_subdirectory ("vendor/munit" EXCLUDE_FROM_ALL)
+# endfunction (kodik_vendor_munit)
 
 function (kodik_vendor_json)
   set (BUILD_TESTING OFF CACHE INTERNAL "Disable json-c testing")
