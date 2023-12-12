@@ -76,59 +76,25 @@ kodik_translation_new_data(char const *title, char const *type, int64_t id) {
 }
 
 kodik_translation_t *
-kodik_translation_new_from_json(json_object *root) {
-  kodik_translation_t *self;
-  json_object *j_title;
-  json_object *j_type;
-  json_object *j_id;
-  size_t title_length;
-  size_t type_length;
-  char const *title;
-  char const *type;
-  int64_t id;
+kodik_translation_new_from_json(json_object const *root) {
+  json_object *j_title,
+              *j_type,
+              *j_id;
 
-  self = NULL;
-
-  j_title = json_object_object_get(root, KODIK_TRANSLATION_FIELD_TITLE);
-  j_type = json_object_object_get(root, KODIK_TRANSLATION_FIELD_TYPE);
-  j_id = json_object_object_get(root, KODIK_TRANSLATION_FIELD_ID);
-
-  if (NULL == j_title
-      || !json_object_is_type(j_title, json_type_string)
-      || NULL == j_type
-      || !json_object_is_type(j_type, json_type_string)
-      || NULL == j_id
-      || !json_object_is_type(j_id, json_type_int)) {
-
-    if (NULL != j_id) {
-      json_object_put(j_id);
-    }
-
-    if (NULL != j_type) {
-      json_object_put(j_type);
-    }
-
-    if (NULL != j_title) {
-      json_object_put(j_title);
-    }
-
-    return self;
+  if (!json_object_object_get_ex(root, KODIK_TRANSLATION_FIELD_TITLE, &j_title)
+      || !json_object_object_get_ex(root, KODIK_TRANSLATION_FIELD_TYPE, &j_type)
+      || !json_object_object_get_ex(root, KODIK_TRANSLATION_FIELD_ID, &j_id)
+        || !json_object_is_type(j_id, json_type_int)
+        || !json_object_is_type(j_title, json_type_string)
+        || !json_object_is_type(j_type, json_type_string)) {
+    return NULL;
   }
 
-  title = json_object_get_string(j_title);
-  title_length = json_object_get_string_len(j_title);
-  type = json_object_get_string(j_type);
-  type_length = json_object_get_string_len(j_type);
-  id = json_object_get_int64(j_id);
-
-  self = kodik_translation_new_data_size(title, title_length,
-                                         type, type_length, id);
-
-  json_object_put(j_id);
-  json_object_put(j_type);
-  json_object_put(j_title);
-
-  return self;
+  return kodik_translation_new_data_size(json_object_get_string(j_title),
+                                         json_object_get_string_len(j_title),
+                                         json_object_get_string(j_type),
+                                         json_object_get_string_len(j_type),
+                                         json_object_get_int64(j_id));
 }
 
 char const *

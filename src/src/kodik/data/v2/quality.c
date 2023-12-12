@@ -58,41 +58,19 @@ kodik_v2_quality_new_data(char const *title, int64_t count) {
 
 kodik_v2_quality_t *
 kodik_v2_quality_new_from_json(json_object *root) {
-  kodik_v2_quality_t *self;
-  json_object *j_title;
-  json_object *j_count;
-  size_t title_length;
-  char const *title;
-  int64_t count;
+  json_object *j_title,
+              *j_count;
 
-  self = NULL;
-
-  j_title = json_object_object_get(root, KODIK_V2_QUALITY_FIELD_TITLE);
-  j_count = json_object_object_get(root, KODIK_V2_QUALITY_FIELD_COUNT);
-
-  if (NULL == j_title
-      || !json_object_is_type(j_title, json_type_string)
-      || NULL == j_count
-      || !json_object_is_type(j_count, json_type_int)) {
-    if (NULL != j_count) {
-      json_object_put(j_count);
-    }
-    if (NULL != j_title) {
-      json_object_put(j_title);
-    }
-    return self;
+  if (!json_object_object_get_ex(root, KODIK_V2_QUALITY_FIELD_TITLE, &j_title)
+      || !json_object_object_get_ex(root, KODIK_V2_QUALITY_FIELD_COUNT, &j_count)
+        || !json_object_is_type(j_title, json_type_string)
+        || !json_object_is_type(j_count, json_type_int)) {
+    return NULL;
   }
 
-  title = json_object_get_string(j_title);
-  title_length = json_object_get_string_len(j_title);
-  count = json_object_get_int64(j_count);
-
-  self = kodik_v2_quality_new_data_size(title, title_length, count);
-
-  json_object_put(j_count);
-  json_object_put(j_title);
-
-  return self;
+  return kodik_v2_quality_new_data_size(json_object_get_string(j_title),
+                                        json_object_get_string_len(j_title),
+                                        json_object_get_int64(j_count));
 }
 
 char const *

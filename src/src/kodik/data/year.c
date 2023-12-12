@@ -40,41 +40,19 @@ kodik_year_new_data(int64_t year, int64_t count) {
 }
 
 kodik_year_t *
-kodik_year_new_from_json(json_object *root) {
-  kodik_year_t *self;
-  json_object *j_year;
-  json_object *j_count;
+kodik_year_new_from_json(json_object const *root) {
+  json_object *j_year,
+              *j_count;
 
-  int64_t year;
-  int64_t count;
-
-  self = NULL;
-
-  j_year = json_object_object_get(root, KODIK_YEAR_FIELD_YEAR);
-  j_count = json_object_object_get(root, KODIK_YEAR_FIELD_COUNT);
-
-  if (NULL == j_year
-      || !json_object_is_type(j_year, json_type_int)
-      || NULL == j_count
-      || !json_object_is_type(j_count, json_type_int)) {
-    if (NULL != j_count) {
-      json_object_put(j_count);
-    }
-    if (NULL != j_year) {
-      json_object_put(j_year);
-    }
-    return self;
+  if (!json_object_object_get_ex(root, KODIK_YEAR_FIELD_YEAR, &j_year)
+      || !json_object_object_get_ex(root, KODIK_YEAR_FIELD_COUNT, &j_count)
+        || !json_object_is_type(j_year, json_type_int)
+        || !json_object_is_type(j_count, json_type_int)) {
+    return NULL;
   }
 
-  year = json_object_get_int64(j_year);
-  count = json_object_get_int64(j_count);
-
-  self = kodik_year_new_data(year, count);
-
-  json_object_put(j_count);
-  json_object_put(j_year);
-
-  return self;
+  return kodik_year_new_data(json_object_get_int64(j_year),
+                             json_object_get_int64(j_count));
 }
 
 int64_t

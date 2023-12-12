@@ -12,7 +12,8 @@ function(kodik_make_data_test NAME)
     ${CURRENT_TEST_EXEC_NAME}
     PRIVATE
       kodik
-      munit)
+      munit
+      json-c)
 
   add_test (
     NAME "kodik ${NAME}"

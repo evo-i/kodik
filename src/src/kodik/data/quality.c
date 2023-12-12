@@ -54,32 +54,16 @@ kodik_quality_new_data(char const *title) {
 }
 
 kodik_quality_t *
-kodik_quality_new_from_json(json_object *json) {
-  kodik_quality_t *self;
+kodik_quality_new_from_json(json_object const *json) {
   json_object *j_title;
-  size_t title_length;
-  char const *title;
 
-  self = NULL;
-
-  j_title = json_object_object_get(json, KODIK_QUALITY_TITLE_KEY);
-
-  if (NULL == j_title
-      || !json_object_is_type(j_title, json_type_string)) {
-    if (NULL != j_title) {
-      json_object_put(j_title);
-    }
+  if (!json_object_object_get_ex(json, KODIK_QUALITY_TITLE_KEY, &j_title)
+      || json_object_is_type(j_title, json_type_string)) {
     return NULL;
   }
 
-  title = json_object_get_string(j_title);
-  title_length = json_object_get_string_len(j_title);
-
-  self = kodik_quality_new_data_size(title, title_length);
-
-  json_object_put(j_title);
-
-  return self;
+  return kodik_quality_new_data_size(json_object_get_string(j_title),
+                                     json_object_get_string_len(j_title));
 }
 
 char const *

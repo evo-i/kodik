@@ -19,8 +19,8 @@
 
 #define KODIK_MEMORY_ERROR_MUTEX(error) #error
 
-mtx_t memory_mutex = { 0 };
-once_flag mem_init = { 0 };
+mtx_t memory_mutex;
+once_flag mem_init = ONCE_FLAG_INIT;
 
 struct mem__ {
   kodik_malloc_t  cb_malloc;

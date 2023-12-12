@@ -33,15 +33,12 @@ target_include_directories (kodik
 target_link_libraries (kodik
   PUBLIC
     threads
-    json-c)
+    json-c-static)
 
 target_compile_definitions (kodik
   PRIVATE
     -DKODIK_DLL_EXPORTS
     -DHAS_CONFIG)
-
-set_property(TARGET kodik PROPERTY
-  MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 set_target_properties (kodik
   PROPERTIES
@@ -56,7 +53,7 @@ set_target_properties (kodik
 if (MSVC)
   set_property (TARGET kodik
     PROPERTY
-      MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+      MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif ()
 
 configure_file ("${CMAKE_CURRENT_LIST_DIR}/include/config.h.in"
