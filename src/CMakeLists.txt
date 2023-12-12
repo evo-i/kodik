@@ -32,13 +32,16 @@ target_include_directories (kodik
 
 target_link_libraries (kodik
   PUBLIC
-    Threads::Threads
-    json-c-static)
+    threads
+    json-c)
 
 target_compile_definitions (kodik
   PRIVATE
     -DKODIK_DLL_EXPORTS
     -DHAS_CONFIG)
+
+set_property(TARGET kodik PROPERTY
+  MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 set_target_properties (kodik
   PROPERTIES

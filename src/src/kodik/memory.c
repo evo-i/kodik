@@ -1,4 +1,4 @@
-#include <pthread.h>
+#include <evo/threads/threads.h>
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -19,7 +19,8 @@
 
 #define KODIK_MEMORY_ERROR_MUTEX(error) #error
 
-static pthread_mutex_t memory_mutex = { 0 };
+mtx_t memory_mutex = { 0 };
+once_flag mem_init = { 0 };
 
 struct mem__ {
   kodik_malloc_t  cb_malloc;
@@ -33,35 +34,34 @@ struct mem__ {
   .cb_free    = KODIK_MEMORY_SELECT(mi_free,    free)
 };
 
-int
+void
 static_mutex_init(void) {
   int status = 0;
-  if (0 == memory_mutex) {
-    status = pthread_mutex_init(&memory_mutex, NULL);
-    if (0 != status) {
-      (void) fprintf(stderr, KODIK_MEMORY_ERROR_MUTEX(status));
-    }
+  status = mtx_init(&memory_mutex, mtx_plain);
+  if (0 != status) {
+    (void) fprintf(stderr, KODIK_MEMORY_ERROR_MUTEX(status));
+    abort();
   }
-  return status;
 }
 
 int
 kodik_memory_get(kodik_malloc_t *p_out_malloc, kodik_calloc_t *p_out_calloc,
                  kodik_realloc_t *p_out_realloc, kodik_free_t *p_out_free) {
+  call_once(&mem_init, static_mutex_init);
+
   int status;
 
-  status = static_mutex_init();
-
-  if (0 != status) {
+  status = mtx_lock(&memory_mutex);
+  if (status != 0) {
     return status;
   }
 
-  pthread_mutex_lock(&memory_mutex);
   *p_out_malloc   = kodik_memory__.cb_malloc;
   *p_out_calloc   = kodik_memory__.cb_calloc;
   *p_out_realloc  = kodik_memory__.cb_realloc;
   *p_out_free     = kodik_memory__.cb_free;
-  pthread_mutex_unlock(&memory_mutex);
+
+  status = mtx_unlock(&memory_mutex);
 
   return status;
 }
@@ -69,69 +69,73 @@ kodik_memory_get(kodik_malloc_t *p_out_malloc, kodik_calloc_t *p_out_calloc,
 int
 kodik_memory_set(kodik_malloc_t p_malloc, kodik_calloc_t p_calloc,
                  kodik_realloc_t p_realloc, kodik_free_t p_free) {
-  int status = static_mutex_init();
+  call_once(&mem_init, static_mutex_init);
 
-  if (0 != status) {
+  int status;
+
+  status = mtx_lock(&memory_mutex);
+
+  if (status != 0) {
     return status;
   }
 
-  pthread_mutex_lock(&memory_mutex);
   kodik_memory__.cb_malloc = p_malloc;
   kodik_memory__.cb_calloc = p_calloc;
   kodik_memory__.cb_realloc = p_realloc;
   kodik_memory__.cb_free = p_free;
-  pthread_mutex_unlock(&memory_mutex);
+  status = mtx_unlock(&memory_mutex);
 
   return status;
 }
 void *
 kodik_malloc(size_t size) {
+  call_once(&mem_init, static_mutex_init);
   void *mem;
-  if (0 != static_mutex_init()) {
+
+  if (thrd_success != mtx_lock(&memory_mutex)) {
     return NULL;
   }
 
-  pthread_mutex_lock(&memory_mutex);
   mem = kodik_memory__.cb_malloc(size);
-  pthread_mutex_unlock(&memory_mutex);
+
+  mtx_unlock(&memory_mutex);
   return mem;
 }
 
 void *
 kodik_calloc(size_t count, size_t size) {
-  void *mem;
+  call_once(&mem_init, static_mutex_init);
 
-  if (0 != static_mutex_init()) {
+  void *mem;
+  if (thrd_success != mtx_lock(&memory_mutex)) {
     return NULL;
   }
 
-  pthread_mutex_lock(&memory_mutex);
   mem = kodik_memory__.cb_calloc(count, size);
-  pthread_mutex_unlock(&memory_mutex);
+  mtx_unlock(&memory_mutex);
   return mem;
 }
 
 void *
 kodik_realloc(void *old_mem, size_t new_size) {
+  call_once(&mem_init, static_mutex_init);
+
   void *mem;
 
-  if (0 != static_mutex_init()) {
+  if (thrd_success != mtx_lock(&memory_mutex)) {
     return NULL;
   }
 
-  pthread_mutex_lock(&memory_mutex);
   mem = kodik_memory__.cb_realloc(old_mem, new_size);
-  pthread_mutex_unlock(&memory_mutex);
+  mtx_unlock(&memory_mutex);
   return mem;
 }
 
 void
 kodik_free(void *block) {
-  if (0 != static_mutex_init()) {
-    return;
-  }
+  call_once(&mem_init, static_mutex_init);
 
-  pthread_mutex_lock(&memory_mutex);
+  mtx_lock(&memory_mutex);
   kodik_memory__.cb_free(block);
-  pthread_mutex_unlock(&memory_mutex);
+  mtx_unlock(&memory_mutex);
 }

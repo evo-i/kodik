@@ -66,8 +66,8 @@ kodik_year_new_from_json(json_object *root) {
     return self;
   }
 
-  year = json_integer_value(j_year);
-  count = json_integer_value(j_count);
+  year = json_object_get_int64(j_year);
+  count = json_object_get_int64(j_count);
 
   self = kodik_year_new_data(year, count);
 

@@ -1,3 +1,14 @@
+/**
+ * \file exports.h
+ * @author evo (kok.in@yahoo.com) https://github.com/evo-i
+ * \brief export functions.
+ * \version 0.1
+ * \date 2023-12-12
+ *
+ * Copyright © 2023 evo-i ({author}) https://github.com/evo-i
+ *
+ */
+
 #ifndef KODIK_EXPORTS_H
 #define KODIK_EXPORTS_H 1
 

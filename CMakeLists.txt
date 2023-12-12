@@ -12,12 +12,13 @@ include (CheckIncludeFile)
 include (CheckSymbolExists)
 include (Vendor)
 
-option (KODIK_BUILD_TESTS "Build tests" OFF)
+option (KODIK_BUILD_TESTS "Build tests" ON)
 
-find_package (Threads REQUIRED)
+find_package (Git REQUIRED)
 
-kodik_vendor_nng ()
+kodik_vendor_threads ()
 kodik_vendor_json ()
+kodik_vendor_nng ()
 
 check_include_file (stdio.h     HAVE_STDIO_H)
 check_include_file (stdint.h    HAVE_STDINT_H)

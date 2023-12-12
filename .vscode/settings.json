@@ -21,7 +21,10 @@
     "munit.h": "c",
     "json.h": "c",
     "json_object.h": "c",
-    "json_tokener.h": "c"
+    "json_tokener.h": "c",
+    "exports.h": "c",
+    "stdatomic.h": "c",
+    "vcruntime_c11_stdatomic.h": "c"
   },
 
   "explorer.compactFolders": false,

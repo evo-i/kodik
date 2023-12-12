@@ -12,3 +12,8 @@ function (kodik_vendor_json)
   set (BUILD_TESTING OFF CACHE INTERNAL "Disable json-c testing")
   add_subdirectory ("vendor/json-c" EXCLUDE_FROM_ALL)
 endfunction (kodik_vendor_json)
+
+function (kodik_vendor_threads)
+
+  add_subdirectory ("vendor/threads" EXCLUDE_FROM_ALL)
+endfunction (kodik_vendor_threads)
