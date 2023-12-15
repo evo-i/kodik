@@ -1,7 +1,3 @@
-[submodule "vendor/munit"]
-	path = vendor/munit
-	url = https://github.com/evo-i/munit.git
-	branch = kodik
 [submodule "vendor/json-c"]
 	path = vendor/json-c
 	url = https://github.com/json-c/json-c.git

@@ -16,6 +16,7 @@ option (KODIK_BUILD_TESTS "Build tests" ON)
 
 find_package (Git REQUIRED)
 
+kodik_vendor_modules ()
 kodik_vendor_threads ()
 kodik_vendor_json ()
 kodik_vendor_nng ()
