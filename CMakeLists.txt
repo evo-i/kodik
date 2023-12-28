@@ -1,8 +1,14 @@
 cmake_minimum_required (VERSION 3.27)
 
+list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+
+include (vcpkg)
+
+kodik_vendor_vcpkg ()
+
 project ("kodik" C)
 
-list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+include (vendor)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -10,16 +16,17 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 include (CheckIncludeFile)
 include (CheckSymbolExists)
-include (Vendor)
 
 option (KODIK_BUILD_TESTS "Build tests" ON)
 
 find_package (Git REQUIRED)
+find_package (nng CONFIG REQUIRED)
 
 kodik_vendor_modules ()
 kodik_vendor_threads ()
 kodik_vendor_json ()
-kodik_vendor_nng ()
+
+find_package (nng CONFIG REQUIRED)
 
 check_include_file (stdio.h     HAVE_STDIO_H)
 check_include_file (stdint.h    HAVE_STDINT_H)
@@ -39,6 +46,5 @@ add_subdirectory (src)
 if (KODIK_BUILD_TESTS)
   include (CTest)
   enable_testing ()
-  # kodik_vendor_munit ()
   add_subdirectory (tests)
 endif ()

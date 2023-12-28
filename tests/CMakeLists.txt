@@ -12,14 +12,14 @@ function(kodik_make_data_test NAME)
     ${CURRENT_TEST_EXEC_NAME}
     PRIVATE
       kodik
-      json-c)
+      kodik::json-static)
 
   target_include_directories (${CURRENT_TEST_EXEC_NAME}
     PRIVATE
       "${CMAKE_SOURCE_DIR}/vendor/utest")
 
   add_test (
-    NAME "kodik ${NAME}"
+    NAME "kodik.data.${NAME}"
     COMMAND "${CURRENT_TEST_EXEC_NAME}"
             "${CMAKE_CURRENT_LIST_DIR}/data/${NAME}.json"
   )

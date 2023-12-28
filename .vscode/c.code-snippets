@@ -1,0 +1,18 @@
+{
+  "cplusplus": {
+    "scope": "c,h",
+    "prefix": "ifcpp",
+    "body": [
+      "#ifdef __cplusplus",
+      "extern \"C\" {",
+      "#endif /* !__cplusplus */",
+      "",
+      "$0",
+      "",
+      "#ifdef __cplusplus",
+      "}",
+      "#endif /* !__cplusplus */"
+    ],
+    "description": "Create a place where C++ will be compiled as C"
+  }
+}

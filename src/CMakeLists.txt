@@ -12,6 +12,9 @@ add_library (kodik
     include/kodik/data/v2/quality.h
     include/kodik/data/v2/translation.h
 
+    include/kodik/api/api.h
+    include/kodik/api/api_types.h
+
     src/kodik/memory.c
     src/kodik/data/year.c
     src/kodik/data/genre.c
@@ -19,7 +22,29 @@ add_library (kodik
     src/kodik/data/quality.c
     src/kodik/data/translation.c
     src/kodik/data/v2/quality.c
-    src/kodik/data/v2/translation.c)
+    src/kodik/data/v2/translation.c
+
+    src/kodik/api/api.c
+    src/kodik/api/ref_count.c)
+
+if (WIN32)
+  target_sources (kodik
+    PRIVATE
+      "../resources/kodik/resource.rc")
+endif ()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  add_custom_command (OUTPUT cert_bundle.o
+    COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/resources/certificates/ && ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/cert_bundle.o ca-bundle.bin
+    COMMAND objcopy --rename-section .data=.rodata,alloc,load,readonly,data,contents ${CMAKE_CURRENT_BINARY_DIR}/cert_bundle.o ${CMAKE_CURRENT_BINARY_DIR}/cert_bundle.o)
+
+  add_library (kodik_cert_bundle
+    STATIC
+      cert_bundle.o)
+  add_library (kodik::cert_bundle
+    ALIAS
+      kodik_cert_bundle)
+endif ()
 
 target_include_directories (kodik
   PUBLIC
@@ -31,8 +56,9 @@ target_include_directories (kodik
 
 target_link_libraries (kodik
   PUBLIC
-    threads
-    json-c-static)
+    kodik::threads
+    kodik::json-static
+    nng::nng)
 
 target_compile_definitions (kodik
   PRIVATE

@@ -11,3 +11,6 @@
 [submodule "vendor/utest"]
 	path = vendor/utest
 	url = https://github.com/sheredom/utest.h.git
+[submodule "vendor/vcpkg"]
+	path = vendor/vcpkg
+	url = https://github.com/microsoft/vcpkg
