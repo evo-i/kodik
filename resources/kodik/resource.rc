@@ -1,5 +1,7 @@
 #include "resource.h"
-#include <Windows.h>
+#include <winres.h>
+
+#pragma code_page(65001)
 
 STRINGTABLE
 BEGIN
@@ -10,7 +12,8 @@ BEGIN
 END
 
 KODIK_IDR_CERTIFICATES_BUNDLE CERTIFICATE "certificates/ca-bundle.bin"
-KODIK_IDR_CERTIFICATES_TRUST_BUNDLE CERTIFICATE "certificates/ca-bundle.trust.bin"
+KODIK_IDR_CERTIFICATES_BUNDLE_TRUST CERTIFICATE "certificates/ca-bundle.trust.bin"
+KODIK_IDR_CERTIFICATES_BUNDLE_MZ CERTIFICATE "certificates/ca-bundle-mz.bin"
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION 1,0,0,0
