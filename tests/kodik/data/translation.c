@@ -14,12 +14,12 @@
 FILE *json_file = NULL;
 
 extern
-kodik_translation_t *
+struct kodik_translation *
 kodik_translation_new_from_json(json_object const *);
 
 extern
 void
-kodik_translation_free(kodik_translation_t *);
+kodik_translation_free(struct kodik_translation *);
 
 UTEST(kodik, translation) {
   ASSERT_NE(json_file, NULL);
@@ -54,7 +54,7 @@ UTEST(kodik, translation) {
   for (size_t i = 0; i < array_size; i++) {
     json_object *current = json_object_array_get_idx(array, i);
     ASSERT_NE(NULL, current);
-    kodik_translation_t *translation = kodik_translation_new_from_json(current);
+    struct kodik_translation *translation = kodik_translation_new_from_json(current);
     ASSERT_NE(NULL, translation);
 
     json_object *j_id,

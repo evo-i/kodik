@@ -10,22 +10,22 @@
 #define KODIK_GENRE_FIELD_TITLE ("title")
 #define KODIK_GENRE_FIELD_COUNT ("count")
 
-struct kodik_genre_t {
+struct kodik_genre {
   char    *psz_title;
   int64_t i_count;
 };
 
 KODIK_API
-kodik_genre_t *
+struct kodik_genre *
 kodik_genre_new(void) {
-  return kodik_calloc(1, sizeof(kodik_genre_t));
+  return kodik_calloc(1, sizeof(struct kodik_genre));
 }
 
 KODIK_API
-kodik_genre_t *
+struct kodik_genre *
 kodik_genre_new_data_size(char const *title, size_t title_length,
                           int64_t count) {
-  kodik_genre_t *self;
+  struct kodik_genre *self;
   char *title_copy;
 
   if (NULL == title
@@ -45,7 +45,7 @@ kodik_genre_new_data_size(char const *title, size_t title_length,
   }
 
   *self
-    = (kodik_genre_t) {
+    = (struct kodik_genre) {
       .psz_title = memmove(title_copy, title, title_length),
       .i_count = count
     };
@@ -54,13 +54,13 @@ kodik_genre_new_data_size(char const *title, size_t title_length,
 }
 
 KODIK_API
-kodik_genre_t *
+struct kodik_genre *
 kodik_genre_new_data(char const *title, int64_t count) {
   return kodik_genre_new_data_size(title, strlen(title), count);
 }
 
 KODIK_API
-kodik_genre_t *
+struct kodik_genre *
 kodik_genre_new_from_json(json_object *root) {
   json_object *j_title,
               *j_count;
@@ -78,7 +78,7 @@ kodik_genre_new_from_json(json_object *root) {
 }
 
 char const *
-kodik_genre_get_title(kodik_genre_t const *self) {
+kodik_genre_get_title(struct kodik_genre const *self) {
   return
     self
       ? self->psz_title
@@ -86,7 +86,7 @@ kodik_genre_get_title(kodik_genre_t const *self) {
 }
 
 int64_t
-kodik_genre_get_count(kodik_genre_t const *self) {
+kodik_genre_get_count(struct kodik_genre const *self) {
   return
     self
       ? self->i_count
@@ -95,7 +95,7 @@ kodik_genre_get_count(kodik_genre_t const *self) {
 
 KODIK_API
 void
-kodik_genre_free(kodik_genre_t *self) {
+kodik_genre_free(struct kodik_genre *self) {
   if (NULL == self) {
     return;
   }

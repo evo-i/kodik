@@ -9,19 +9,19 @@ extern "C" {
 #include <stddef.h>
 #include "../exports.h"
 
-typedef struct kodik_translation_t kodik_translation_t;
+struct kodik_translation;
 
 KODIK_API
 char const *
-kodik_translation_get_title(kodik_translation_t const *self);
+kodik_translation_get_title(struct kodik_translation const *self);
 
 KODIK_API
 char const *
-kodik_translation_get_type(kodik_translation_t const *self);
+kodik_translation_get_type(struct kodik_translation const *self);
 
 KODIK_API
 int64_t
-kodik_translation_get_id(kodik_translation_t const *self);
+kodik_translation_get_id(struct kodik_translation const *self);
 
 #ifdef __cplusplus
 }

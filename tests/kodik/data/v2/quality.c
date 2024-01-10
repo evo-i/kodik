@@ -16,12 +16,12 @@ struct utest_state_s utest_state = {0, 0, 0};
 FILE *json_file = NULL;
 
 extern
-kodik_v2_quality_t *
+struct kodik_v2_quality *
 kodik_v2_quality_new_from_json(json_object const *);
 
 extern
 void
-kodik_v2_quality_free(kodik_v2_quality_t *);
+kodik_v2_quality_free(struct kodik_v2_quality *);
 
 UTEST(kodik, v2_quality) {
   ASSERT_NE(json_file, NULL);
@@ -59,7 +59,7 @@ UTEST(kodik, v2_quality) {
   for (size_t i = 0; i < array_size; i++) {
     json_object *current = json_object_array_get_idx(array, i);
     ASSERT_NE(NULL, current);
-    kodik_v2_quality_t *v2_quality = kodik_v2_quality_new_from_json(current);
+    struct kodik_v2_quality *v2_quality = kodik_v2_quality_new_from_json(current);
     ASSERT_NE(NULL, v2_quality);
 
     json_object *j_count,

@@ -10,21 +10,21 @@
 #define KODIK_YEAR_FIELD_YEAR  ("year")
 #define KODIK_YEAR_FIELD_COUNT ("count")
 
-struct kodik_year_t {
+struct kodik_year {
   int64_t i_year;
   int64_t i_count;
 };
 
 KODIK_API
-kodik_year_t *
+struct kodik_year *
 kodik_year_new(void) {
-  return kodik_calloc(1, sizeof(kodik_year_t));
+  return kodik_calloc(1, sizeof(struct kodik_year));
 }
 
 KODIK_API
-kodik_year_t *
+struct kodik_year *
 kodik_year_new_data(int64_t year, int64_t count) {
-  kodik_year_t *self;
+  struct kodik_year *self;
 
   self = kodik_year_new();
   if (NULL == self) {
@@ -32,7 +32,7 @@ kodik_year_new_data(int64_t year, int64_t count) {
   }
 
   *self
-    = (kodik_year_t) {
+    = (struct kodik_year) {
       .i_year = year,
       .i_count = count
     };
@@ -41,7 +41,7 @@ kodik_year_new_data(int64_t year, int64_t count) {
 }
 
 KODIK_API
-kodik_year_t *
+struct kodik_year *
 kodik_year_new_from_json(json_object const *root) {
   json_object *j_year,
               *j_count;
@@ -58,7 +58,7 @@ kodik_year_new_from_json(json_object const *root) {
 }
 
 int64_t
-kodik_year_get_year(kodik_year_t const *year) {
+kodik_year_get_year(struct kodik_year const *year) {
   return
     year
       ? year->i_year
@@ -66,7 +66,7 @@ kodik_year_get_year(kodik_year_t const *year) {
 }
 
 int64_t
-kodik_year_get_count(kodik_year_t const *year) {
+kodik_year_get_count(struct kodik_year const *year) {
   return
     year
       ? year->i_count
@@ -75,6 +75,6 @@ kodik_year_get_count(kodik_year_t const *year) {
 
 KODIK_API
 void
-kodik_year_free(kodik_year_t *self) {
+kodik_year_free(struct kodik_year *self) {
   kodik_free(self);
 }

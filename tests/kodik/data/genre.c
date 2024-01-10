@@ -14,12 +14,12 @@
 FILE *json_file = NULL;
 
 extern
-kodik_genre_t *
+struct kodik_genre *
 kodik_genre_new_from_json(json_object const *);
 
 extern
 void
-kodik_genre_free(kodik_genre_t *);
+kodik_genre_free(struct kodik_genre *);
 
 UTEST(kodik, genre) {
   ASSERT_NE(json_file, NULL);
@@ -57,7 +57,7 @@ UTEST(kodik, genre) {
   for (size_t i = 0; i < array_size; i++) {
     json_object *current = json_object_array_get_idx(array, i);
     ASSERT_NE(NULL, current);
-    kodik_genre_t *genre = kodik_genre_new_from_json(current);
+    struct kodik_genre *genre = kodik_genre_new_from_json(current);
     ASSERT_NE(NULL, genre);
 
     json_object *j_count,

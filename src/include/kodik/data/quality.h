@@ -7,11 +7,11 @@ extern "C" {
 
 #include "../exports.h"
 
-typedef struct kodik_quality_t kodik_quality_t;
+struct kodik_quality;
 
 KODIK_API
 char const *
-kodik_quality_get_title(kodik_quality_t const *self);
+kodik_quality_get_title(struct kodik_quality const *self);
 
 #ifdef __cplusplus
 }

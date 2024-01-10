@@ -14,12 +14,12 @@
 FILE *json_file = NULL;
 
 extern
-kodik_country_t *
+struct kodik_country *
 kodik_country_new_from_json(json_object const *);
 
 extern
 void
-kodik_country_free(kodik_country_t *);
+kodik_country_free(struct kodik_country *);
 
 UTEST(kodik, country) {
   ASSERT_NE(json_file, NULL);
@@ -57,7 +57,7 @@ UTEST(kodik, country) {
   for (size_t i = 0; i < array_size; i++) {
     json_object *current = json_object_array_get_idx(array, i);
     ASSERT_NE(NULL, current);
-    kodik_country_t *country = kodik_country_new_from_json(current);
+    struct kodik_country *country = kodik_country_new_from_json(current);
     ASSERT_NE(NULL, country);
 
     json_object *j_count,

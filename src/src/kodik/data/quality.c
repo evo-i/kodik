@@ -12,20 +12,20 @@
     MAYBE STRUCT SIZE IS EQUAL TO STRING LENGTH?...
 */
 
-struct kodik_quality_t {
+struct kodik_quality {
   char *psz_title;
 };
 
 KODIK_API
-kodik_quality_t *
+struct kodik_quality *
 kodik_quality_new(void) {
-  return kodik_calloc(1, sizeof(kodik_quality_t));
+  return kodik_calloc(1, sizeof(struct kodik_quality));
 }
 
 KODIK_API
-kodik_quality_t *
+struct kodik_quality *
 kodik_quality_new_data_size(char const *title, size_t title_length) {
-  kodik_quality_t *quality;
+  struct kodik_quality *quality;
 
   if (NULL == title
       || 0 == title_length) {
@@ -50,13 +50,13 @@ kodik_quality_new_data_size(char const *title, size_t title_length) {
 }
 
 KODIK_API
-kodik_quality_t *
+struct kodik_quality *
 kodik_quality_new_data(char const *title) {
   return kodik_quality_new_data_size(title, strlen(title));
 }
 
 KODIK_API
-kodik_quality_t *
+struct kodik_quality *
 kodik_quality_new_from_json(json_object const *json) {
   json_object *j_title;
 
@@ -70,7 +70,7 @@ kodik_quality_new_from_json(json_object const *json) {
 }
 
 char const *
-kodik_quality_get_title(kodik_quality_t const *quality) {
+kodik_quality_get_title(struct kodik_quality const *quality) {
   return
     quality
       ? quality->psz_title
@@ -79,7 +79,7 @@ kodik_quality_get_title(kodik_quality_t const *quality) {
 
 KODIK_API
 void
-kodik_quality_free(kodik_quality_t *self) {
+kodik_quality_free(struct kodik_quality *self) {
   if (NULL == self) {
     return;
   }

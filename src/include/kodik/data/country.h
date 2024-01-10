@@ -8,15 +8,15 @@ extern "C" {
 #include <stdint.h>
 #include "../exports.h"
 
-typedef struct kodik_country_t kodik_country_t;
+struct kodik_country;
 
 KODIK_API
 char const *
-kodik_country_get_title(kodik_country_t const *self);
+kodik_country_get_title(struct kodik_country const *self);
 
 KODIK_API
 int64_t
-kodik_country_get_count(kodik_country_t const *self);
+kodik_country_get_count(struct kodik_country const *self);
 
 #ifdef __cplusplus
 }

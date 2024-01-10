@@ -9,15 +9,15 @@ extern "C" {
 #include <stddef.h>
 #include "../exports.h"
 
-typedef struct kodik_genre_t kodik_genre_t;
+struct kodik_genre;
 
 KODIK_API
 char const *
-kodik_genre_get_title(kodik_genre_t const *self);
+kodik_genre_get_title(struct kodik_genre const *self);
 
 KODIK_API
 int64_t
-kodik_genre_get_count(kodik_genre_t const *self);
+kodik_genre_get_count(struct kodik_genre const *self);
 
 #ifdef __cplusplus
 }

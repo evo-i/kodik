@@ -12,22 +12,22 @@
 #define KODIK_COUNTRY_FIELD_TITLE ("title")
 #define KODIK_COUNTRY_FIELD_COUNT ("count")
 
-struct kodik_country_t {
+struct kodik_country {
   char *psz_title;
   int64_t i_count;
 };
 
 KODIK_API
-kodik_country_t *
+struct kodik_country *
 kodik_country_new(void) {
-  return kodik_calloc(1, sizeof(kodik_country_t));
+  return kodik_calloc(1, sizeof(struct kodik_country));
 }
 
 KODIK_API
-kodik_country_t *
+struct kodik_country *
 kodik_country_new_data_size(char const *title, size_t title_length,
                             int64_t count) {
-  kodik_country_t *self;
+  struct kodik_country *self;
   char *title_copy;
 
   if (NULL == title
@@ -47,7 +47,7 @@ kodik_country_new_data_size(char const *title, size_t title_length,
   }
 
   *self
-    = (kodik_country_t) {
+    = (struct kodik_country) {
       .psz_title = memmove(title_copy, title, title_length),
       .i_count = count
     };
@@ -56,13 +56,13 @@ kodik_country_new_data_size(char const *title, size_t title_length,
 }
 
 KODIK_API
-kodik_country_t *
+struct kodik_country *
 kodik_country_new_data(char const *title, int64_t count) {
   return kodik_country_new_data_size(title, strlen(title), count);
 }
 
 KODIK_API
-kodik_country_t *
+struct kodik_country *
 kodik_country_new_from_json(json_object const *root) {
   json_object *j_title,
               *j_count;
@@ -80,7 +80,7 @@ kodik_country_new_from_json(json_object const *root) {
 }
 
 char const *
-kodik_country_get_title(kodik_country_t const *country) {
+kodik_country_get_title(struct kodik_country const *country) {
   return
     country
       ? country->psz_title
@@ -88,7 +88,7 @@ kodik_country_get_title(kodik_country_t const *country) {
 }
 
 int64_t
-kodik_country_get_count(kodik_country_t const *country) {
+kodik_country_get_count(struct kodik_country const *country) {
   return
     country
       ? country->i_count
@@ -97,7 +97,7 @@ kodik_country_get_count(kodik_country_t const *country) {
 
 KODIK_API
 void
-kodik_country_free(kodik_country_t *self) {
+kodik_country_free(struct kodik_country *self) {
   if (NULL == self) {
     return;
   }

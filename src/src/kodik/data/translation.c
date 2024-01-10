@@ -11,24 +11,24 @@
 #define KODIK_TRANSLATION_FIELD_TYPE  ("type")
 #define KODIK_TRANSLATION_FIELD_ID    ("id")
 
-struct kodik_translation_t {
+struct kodik_translation {
   char *psz_title;
   char *psz_type;
   int64_t i_id;
 };
 
 KODIK_API
-kodik_translation_t *
+struct kodik_translation *
 kodik_translation_new(void) {
-  return kodik_calloc(1, sizeof(kodik_translation_t));
+  return kodik_calloc(1, sizeof(struct kodik_translation));
 }
 
 KODIK_API
-kodik_translation_t *
+struct kodik_translation *
 kodik_translation_new_data_size(char const *title, size_t title_length,
                                 char const *type, size_t type_length,
                                 int64_t id) {
-  kodik_translation_t *self;
+  struct kodik_translation *self;
   char *title_copy;
   char *type_copy;
 
@@ -61,7 +61,7 @@ kodik_translation_new_data_size(char const *title, size_t title_length,
   }
 
   *self
-    = (kodik_translation_t) {
+    = (struct kodik_translation) {
       .psz_title = memmove(title_copy, title, title_length),
       .psz_type = memmove(type_copy, type, type_length),
       .i_id = id
@@ -71,7 +71,7 @@ kodik_translation_new_data_size(char const *title, size_t title_length,
 }
 
 KODIK_API
-kodik_translation_t *
+struct kodik_translation *
 kodik_translation_new_data(char const *title, char const *type, int64_t id) {
   return kodik_translation_new_data_size(title, strlen(title),
                                          type, strlen(type),
@@ -79,7 +79,7 @@ kodik_translation_new_data(char const *title, char const *type, int64_t id) {
 }
 
 KODIK_API
-kodik_translation_t *
+struct kodik_translation *
 kodik_translation_new_from_json(json_object const *root) {
   json_object *j_title,
               *j_type,
@@ -102,7 +102,7 @@ kodik_translation_new_from_json(json_object const *root) {
 }
 
 char const *
-kodik_translation_get_title(kodik_translation_t const *self) {
+kodik_translation_get_title(struct kodik_translation const *self) {
   return
     self
       ? self->psz_title
@@ -110,7 +110,7 @@ kodik_translation_get_title(kodik_translation_t const *self) {
 }
 
 char const *
-kodik_translation_get_type(kodik_translation_t const *self) {
+kodik_translation_get_type(struct kodik_translation const *self) {
   return
     self
       ? self->psz_type
@@ -118,7 +118,7 @@ kodik_translation_get_type(kodik_translation_t const *self) {
 }
 
 int64_t
-kodik_translation_get_id(kodik_translation_t const *self) {
+kodik_translation_get_id(struct kodik_translation const *self) {
   return
     self
       ? self->i_id
@@ -127,7 +127,7 @@ kodik_translation_get_id(kodik_translation_t const *self) {
 
 KODIK_API
 void
-kodik_translation_free(kodik_translation_t *self) {
+kodik_translation_free(struct kodik_translation *self) {
   if (NULL == self) {
     return;
   }
