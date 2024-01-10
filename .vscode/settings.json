@@ -27,7 +27,8 @@
     "vcruntime_c11_stdatomic.h": "c",
     "country.h": "c",
     "year.h": "c",
-    "*.h": "c"
+    "*.h": "c",
+    "__msvc_cxx_stdatomic.hpp": "c"
   },
 
   "explorer.compactFolders": false,

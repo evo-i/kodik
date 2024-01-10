@@ -14,6 +14,7 @@ add_library (kodik
 
     include/kodik/api/api.h
     include/kodik/api/api_types.h
+    include/kodik/api/object.h
 
     src/kodik/memory.c
     src/kodik/data/year.c
@@ -25,7 +26,8 @@ add_library (kodik
     src/kodik/data/v2/translation.c
 
     src/kodik/api/api.c
-    src/kodik/api/ref_count.c)
+    src/kodik/api/ref_count.c
+    src/kodik/api/object.c)
 
 if (WIN32)
   target_sources (kodik

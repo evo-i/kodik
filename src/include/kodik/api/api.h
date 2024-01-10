@@ -8,10 +8,10 @@ extern "C" {
 #include "../exports.h"
 #include "api_types.h"
 
-typedef struct kodik_api_t kodik_api_t;
+struct kodik_api;
 
 KODIK_API
-kodik_api_t *
+struct kodik_api *
 kodik_api_new(char const *token);
 
 KODIK_API
@@ -20,7 +20,7 @@ kodik_api_get(enum kodik_api_type_e type);
 
 KODIK_API
 void
-kodik_api_free(kodik_api_t *api);
+kodik_api_free(struct kodik_api *api);
 
 #ifdef __cplusplus
 }

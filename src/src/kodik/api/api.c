@@ -1,5 +1,7 @@
 #include <kodik/api/api.h>
 
+#include <config.h>
+
 #include <stdint.h>
 #include <evo/threads/threads.h>
 
@@ -7,9 +9,11 @@
 #include <nng/supplemental/tls/tls.h>
 #include <nng/supplemental/http/http.h>
 
+#include <stdatomic.h>
+
 struct kodik_ref_count {
   mtx_t mutex;
-  uint64_t count;
+  atomic_ulong ref_count;
 };
 
 struct kodik_tls {

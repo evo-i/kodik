@@ -33,13 +33,14 @@ check_include_file (stdint.h    HAVE_STDINT_H)
 check_include_file (inttypes.h  HAVE_INTTYPES_H)
 check_include_file (stdlib.h    HAVE_STDLIB_H)
 check_include_file (string.h    HAVE_STRING_H)
+check_include_file (stdatomic.h HAVE_STDATOMIC_H)
 
 check_include_file (threads.h   HAVE_THREADS_H)
 check_include_file (pthread.h   HAVE_PTHREAD_H)
 
+set (CMAKE_C_STANDARD_REQUIRED ON)
 set (CMAKE_C_STANDARD 17)
 set (CMAKE_C_EXTENSIONS OFF)
-set (CMAKE_C_STANDARD_REQUIRED ON)
 
 add_subdirectory (src)
 
@@ -48,3 +49,7 @@ if (KODIK_BUILD_TESTS)
   enable_testing ()
   add_subdirectory (tests)
 endif ()
+
+add_executable (main main.c)
+
+target_link_libraries (main PRIVATE kodik)

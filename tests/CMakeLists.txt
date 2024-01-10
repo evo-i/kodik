@@ -12,7 +12,7 @@ function(kodik_make_data_test NAME)
     ${CURRENT_TEST_EXEC_NAME}
     PRIVATE
       kodik
-      kodik::json-static)
+      kodik::json)
 
   target_include_directories (${CURRENT_TEST_EXEC_NAME}
     PRIVATE

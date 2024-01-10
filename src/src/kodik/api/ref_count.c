@@ -2,7 +2,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include <stdatomic.h>
+
 struct kodik_ref_count {
-  uint64_t refs;
+  atomic_ullong ref;
   mtx_t mtx;
 };
